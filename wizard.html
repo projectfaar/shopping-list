@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Shopping List Wizard (FAAR)</title>
-    
+        
     <script>
         function search() {
             var container = document.getElementById("ul_container");
@@ -16,7 +16,17 @@
                 container.appendChild(li);
             }
             
-            addItem(item);
+            function fetch(endpoint, data) {
+                var script = document.createElement("script");
+                script.setAttribute("src", endpoint+JSON.stringify(data));
+                document.body.appendChild(script);
+            }
+            
+            fetch("/fetch/", item);
+        }
+        
+        function JSONPCallback(ladata) {
+            alert(JSON.stringify(ladata));
         }
     </script>
 </head>
