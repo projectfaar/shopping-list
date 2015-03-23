@@ -1,5 +1,6 @@
 var http = require("http");
 var fs = require("fs");
+var net = require("net");
 var querystring = require("querystring");
 
 var wizard = fs.readFileSync("wizard.html").toString();
@@ -7,9 +8,9 @@ var wizard = fs.readFileSync("wizard.html").toString();
 var wizardCounter = 0;
 var wizards = {};
 
-http.createServer(function(req, res) {
-	console.log(wizards);
+var masterToken = "CATSONRATS";
 
+http.createServer(function(req, res) {
 	if(req.url == "/") {
 		res.writeHead(200, {'Content-Type': 'text/html'});
 		res.end(wizard);
@@ -47,3 +48,12 @@ http.createServer(function(req, res) {
 		console.log(req.url.slice(0, "/fetch/".length));
 	}
 }).listen(8888);
+
+net.createServer(function(conn) {
+	conn.on('data', function(d) {
+		if(d.toString().split(",")[0] == masterToken) {
+			var bits = d.toString().trim().split(",")[1];
+			conn.write(JSON.stringify(wizards[bits]));
+		}
+	})
+}).listen(1337);
