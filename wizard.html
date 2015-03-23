@@ -4,33 +4,53 @@
     <title>Shopping List Wizard (FAAR)</title>
         
     <script>
-        function search() {
+        var masterEndpoint = "http://localhost:8888/";
+        
+        function addItem(value) {
             var container = document.getElementById("ul_container");
+            
+            var li = document.createElement("li");
+            var textNode = document.createTextNode(value);
+            li.appendChild(textNode);
+
+            container.appendChild(li);
+        }
+        
+        function fetch(endpoint, data) {
+            var script = document.createElement("script");
+            script.setAttribute("src", masterEndpoint+endpoint+"/"+JSON.stringify(data));
+            document.body.appendChild(script);
+        }
+        
+        function search() {
             var item = document.getElementById("item").value;
-            
-            function addItem(value) {
-                var li = document.createElement("li");
-                var textNode = document.createTextNode(value);
-                li.appendChild(textNode);
-                
-                container.appendChild(li);
-            }
-            
-            function fetch(endpoint, data) {
-                var script = document.createElement("script");
-                script.setAttribute("src", endpoint+JSON.stringify(data));
-                document.body.appendChild(script);
-            }
-            
-            fetch("http://localhost:8888/fetch/", item);
+                        
+            fetch("fetch", {
+                type: "add",
+                product: item
+            });
         }
         
         function JSONPCallback(ladata) {
-            alert(JSON.stringify(ladata));
+            if(ladata.type == "auth") {
+                token = ladata.token; 
+            } else if(ladata.type == "add") {
+                if(ladata.success) {
+                    addItem(ladata.product);
+                } else {
+                    alert("Error: "+ladata.product+" not found");
+                }
+            }
+        }
+        
+        function load() {
+          fetch("fetch", {
+              type: "auth"
+          });
         }
     </script>
 </head>
-<body>
+<body onload="load()">
     <h1>Shopping List Wizard (FAAR)</h1>
     
     <span style="font-size: 150%">Search:</span>

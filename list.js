@@ -8,6 +8,8 @@ var wizardCounter = 0;
 var wizards = {};
 
 http.createServer(function(req, res) {
+	console.log(wizards);
+
 	if(req.url == "/") {
 		res.writeHead(200, {'Content-Type': 'text/html'});
 		res.end(wizard);
@@ -31,6 +33,7 @@ http.createServer(function(req, res) {
 
 			response = {
 				type: "add",
+				product: data.product,
 				success: true
 			}
 		} else if(data.type == "remove") {
