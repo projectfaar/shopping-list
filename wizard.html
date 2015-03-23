@@ -5,6 +5,7 @@
         
     <script>
         var masterEndpoint = "http://localhost:8888/";
+        var token = "";
         
         function addItem(value) {
             var container = document.getElementById("ul_container");
@@ -27,7 +28,8 @@
                         
             fetch("fetch", {
                 type: "add",
-                product: item
+                product: item,
+                token: token
             });
         }
         
