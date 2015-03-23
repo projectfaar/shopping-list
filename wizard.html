@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List Wizard (FAAR)</title>
+    
+    <script>
+        function search() {
+            var container = document.getElementById("ul_container");
+            var item = document.getElementById("item").value;
+            
+            function addItem(value) {
+                var li = document.createElement("li");
+                var textNode = document.createTextNode(value);
+                li.appendChild(textNode);
+                
+                container.appendChild(li);
+            }
+            
+            addItem(item);
+        }
+    </script>
+</head>
+<body>
+    <h1>Shopping List Wizard (FAAR)</h1>
+    
+    <span style="font-size: 150%">Search:</span>
+    <input type="text" id="item"/>
+    <input type="submit" onclick="search()" value="Search"/>
+    <br/> <br/>
+    
+    <span style="font-size: 150%">List</span>
+    
+    <ul id="ul_container">
+        <li>ASDF</li>
+    </ul>
+    
+    </body>
+</html>
