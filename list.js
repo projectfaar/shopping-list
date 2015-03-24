@@ -51,9 +51,13 @@ http.createServer(function(req, res) {
 
 net.createServer(function(conn) {
 	conn.on('data', function(d) {
-		if(d.toString().split(",")[0] == masterToken) {
-			var bits = d.toString().trim().split(",")[1];
-			conn.write(JSON.stringify(wizards[bits]));
+		try {
+			if(d.toString().split(",")[0] == masterToken) {
+				var bits = d.toString().trim().split(",")[1];
+				conn.write(JSON.stringify(wizards[bits]));
+			}			
+		} catch(e) {
+			console.error(e);
 		}
 	})
 }).listen(1337);
